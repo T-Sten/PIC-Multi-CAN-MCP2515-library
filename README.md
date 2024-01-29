@@ -1,5 +1,5 @@
 # PIC-Multi-CAN-MCP2515-library
-Library for implementation of multiple MCP2515 CAN controllers for most 8-bit PIC MCUs with MSSP module
+Library for using multiple MCP2515 CAN controllers with most 8-bit PIC MCUs with MSSP module. Compatibility can be extended with modifying the included SPI library
 
 ## Calculating the CAN speed
 This library currently has CNF registers settings for 95kbps and 500kbps at 8MHz clockspeed.
