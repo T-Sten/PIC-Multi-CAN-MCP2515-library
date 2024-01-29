@@ -23,7 +23,6 @@ void SPI_ini(SPI_SPEED spi_speed){
     SSPCON = spi_speed; //SPI to master mode with the desired speed
     SSPCONbits.CKP = 1; //Idle state is high level (SPI mode 2)
     
-    //SSPSTAT = 0b00000000; //pg 74/234
     
     SSPEN = 1; //Enable MSSP;
 }
