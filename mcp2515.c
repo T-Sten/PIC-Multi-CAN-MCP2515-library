@@ -1,6 +1,6 @@
 /*
  * File:   mcp2515.c
- * Author: tomst
+ * Author: Tom Stenvall
  *
  * Created on January 8, 2024, 10:45 PM
  */
@@ -64,7 +64,8 @@
 
 
 
-void MCP2515_attach(Mcp2515* self, SS_PIN_PORT ss_port,const uint8_t ss_pin){
+
+void MCP2515_attach(Mcp2515* self, SS_PIN_PORT ss_port, uint8_t ss_pin){
     
     //calculate bitmask corresponding to pin number
     self->_ss_pin_bitmask = (uint8_t)(0x01 << ss_pin);
@@ -105,10 +106,16 @@ void MCP2515_ini(Mcp2515* self, BUS_SPEED bus_speed, uint8_t enable_rollover){
     switch(bus_speed){
 
         case BUS_SPEED_95KBPS:
-        cnf1 =  SETTING_95KBPS_CNF1;
-        cnf2 = SETTING_95KBPS_CNF2;
-        cnf3 = SETTING_95KBPS_CNF3;
-        break;                
+            cnf1 =  SETTING_95KBPS_CNF1;
+            cnf2 = SETTING_95KBPS_CNF2;
+            cnf3 = SETTING_95KBPS_CNF3;
+        break;     
+        
+        case BUS_SPEED_500KBPS:
+            cnf1 = SETTING_500KBPS_CNF1;
+            cnf2 = SETTING_500KBPS_CNF2;
+            cnf3 = SETTING_500KBPS_CNF3;
+            break;
     }
     
     MCP2515_set_reg(self, REG_CNF1, cnf1);
@@ -193,7 +200,7 @@ void MCP2515_read_rx(Mcp2515* self, Can_frame* frame, uint8_t buffer){
     
     uint8_t ins;
     if(buffer == 0){ins = INS_READRX;}
-    else{ins = INS_READRX | 0b10;}
+    else{ins = INS_READRX | 0b100;}
 
     SS_LOW;
     SPI_transfer(ins);
@@ -255,7 +262,7 @@ void MCP2515_bitmod(Mcp2515* self, uint8_t reg_address, uint8_t mask, uint8_t da
     SS_HIGH;
 }
 
-void MCP2515_setfilter(Mcp2515* self, uint8_t filter_n, uint8_t id){
+void MCP2515_setfilter(Mcp2515* self, uint8_t filter_n, uint16_t id){
     
     //Filters 0-1 is associated with RX buffer 0 and filters 2-5 with RX buffer 1
     uint8_t buffer_n = 0;

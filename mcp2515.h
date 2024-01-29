@@ -11,6 +11,22 @@
 
 #include "spi.h"
 
+/*
+ * NOTE: These predefined settings only support 8MHZ CLOCK
+ */
+typedef enum{
+    BUS_SPEED_95KBPS,
+    BUS_SPEED_500KBPS
+}BUS_SPEED;
+
+#define SETTING_95KBPS_CNF1 0x01
+#define SETTING_95KBPS_CNF2 0x35
+#define SETTING_95KBPS_CNF3 0x00
+
+#define SETTING_500KBPS_CNF1 0x00
+#define SETTING_500KBPS_CNF2 0x0A
+#define SETTING_500KBPS_CNF3 0x00
+
 //Interrupts
 //These enumerations used for enabling and clearing interrupts
 typedef enum{
@@ -56,17 +72,6 @@ typedef enum{
     ROLLOVER_ENABLE,
     ROLLOVER_DISABLE
 }MCP_ROLLOVER;
-
-/*
- * NOTE: These predefined settings only support 8MHZ CLOCK
- */
-typedef enum{
-    BUS_SPEED_95KBPS
-}BUS_SPEED;
-
-#define SETTING_95KBPS_CNF1 0x1
-#define SETTING_95KBPS_CNF2 0x35
-#define SETTING_95KBPS_CNF3 0x00
 
 
 //attach function writes to an instance of this:
@@ -124,7 +129,7 @@ void MCP2515_setclkout(Mcp2515*, MCP_CLKOUT);
 uint8_t MCP2515_get_reg(Mcp2515*, uint8_t reg_address);
 void MCP2515_set_reg(Mcp2515*, uint8_t reg_address, uint8_t data);
 
-void MCP2515_setfilter(Mcp2515*, uint8_t filter_n, uint8_t id);
+void MCP2515_setfilter(Mcp2515*, uint8_t filter_n, uint16_t id);
 void MCP2515_disable_filters(Mcp2515*);
 
 void MCP2515_load_tx(Mcp2515*, Can_frame*, uint8_t buffer);
